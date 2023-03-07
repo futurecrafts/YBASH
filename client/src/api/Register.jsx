@@ -36,19 +36,24 @@ export default function Register() {
         try{
             const response = await axios.post('/api/register', params);
             console.log(response?.data);
-            console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
 
-            navigate('/api/login');
+            if ((response.status === 200) || (response.status === 201)) {
+                navigate('/api/login');
+            }
 
         } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+            } else if (err.request) {
+                // The request was made but no reponse was received
+                console.log(err.request);
             } else {
-                setErrMsg('Registration Failed')
+                console.log('Registration Failed')
             }
+            alert('Registration was not successful! please check the console log!')
         }
     }
 //<button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>

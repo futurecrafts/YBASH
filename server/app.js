@@ -130,6 +130,7 @@ app.post("/api/login", async (req, res) => {
           // Make sure there is an Email and Password in the request
           if (!(Email && Password)) {
               res.status(400).send("All input is required");
+              return;
           }
               
           let user = [];

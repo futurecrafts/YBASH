@@ -22,18 +22,22 @@ export default function Login() {
         try{
             const response = await axios.post('/api/login', params);
             console.log(response?.data);
-            console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
-
-            navigate('/api/dashboard');
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
-            } else {
-                setErrMsg('Login Failed')
+            if (response.status === 200) {
+                navigate('/api/dashboard');
             }
+        } catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+            } else if (err.request) {
+                // The request was made but no reponse was received
+                console.log(err.request);
+            } else {
+                console.log('Registration Failed')
+            }
+            alert('Login was not successful! please check the console log!')
         }
     }
 //<button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button>
